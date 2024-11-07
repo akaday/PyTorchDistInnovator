@@ -1,0 +1,9 @@
+dist_backend: 'nccl'
+world_size: 4
+rank: 0
+master_addr: 'localhost'
+master_port: '12345'
+
+hyperparameters:
+  learning_rate: 0.001
+  batch_size: 32
