@@ -1,5 +1,27 @@
 # PyTorchDistInnovator
 
+Welcome to PyTorchDistInnovator!
+
+This is a project designed to showcase how PyTorch can be used in conjunction with FastAPI to create an efficient and scalable API.
+
+## Getting Started
+
+Follow these instructions to get your development environment set up.
+
+### Prerequisites
+
+- Python 3.8+
+- PyTorch
+- FastAPI
+- Uvicorn
+
+### Installation
+
+Clone the repository:
+```bash
+git clone https://github.com/akaday/PyTorchDistInnovator.git
+cd PyTorchDistInnovator
+
 ## Configuration File
 
 The configuration file is used to manage hyperparameters and other settings, making it easier to modify configurations without changing the code. You can use either a YAML file (`config.yaml`) or a JSON file (`config.json`) for the configuration.
