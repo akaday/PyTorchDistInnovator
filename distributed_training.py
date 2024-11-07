@@ -3,8 +3,21 @@ import torch.distributed as dist
 import torch.nn as nn
 import torch.optim as optim
 import logging
+import yaml
+import json
 from distributed_config import dist_backend, world_size, rank, master_addr, master_port
 from data_loader import get_data_loader
+
+# Load hyperparameters from config.yaml or config.json
+config_file = 'config.yaml'  # Change this to 'config.json' if using JSON
+with open(config_file, 'r') as file:
+    if config_file.endswith('.yaml'):
+        config = yaml.safe_load(file)
+    elif config_file.endswith('.json'):
+        config = json.load(file)
+    else:
+        raise ValueError("Unsupported configuration file format. Use YAML or JSON.")
+hyperparameters = config['hyperparameters']
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -45,10 +58,10 @@ class CNNModel(nn.Module):
 model = CNNModel()
 model = nn.parallel.DistributedDataParallel(model)
 loss_fn = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=hyperparameters['learning_rate'])
 
 # Load data
-data_loader = get_data_loader(image_dir='path/to/images', batch_size=32)
+data_loader = get_data_loader(image_dir='path/to/images', batch_size=hyperparameters['batch_size'])
 
 # Example training loop
 for epoch in range(10):
