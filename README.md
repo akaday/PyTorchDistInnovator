@@ -82,3 +82,43 @@ hyperparameters:
 ```
 
 After adding the new hyperparameters, you can access them in the code by updating the relevant sections in the `distributed_training.py` file. The hyperparameters are loaded from the configuration file and stored in the `hyperparameters` dictionary. You can then use the new hyperparameters in your code as needed.
+
+## Using TensorBoard for Real-Time Monitoring and Visualization
+
+To integrate TensorBoard for real-time monitoring and visualization of training metrics, follow these steps:
+
+1. Install TensorBoard by running `pip install tensorboard`.
+2. Import TensorBoard in your `distributed_training.py` file:
+   ```python
+   from torch.utils.tensorboard import SummaryWriter
+   ```
+3. Create a `SummaryWriter` instance to log metrics:
+   ```python
+   writer = SummaryWriter()
+   ```
+4. Log the training metrics such as loss and accuracy to TensorBoard within the training loop:
+   ```python
+   writer.add_scalar('Loss/train', loss.item(), epoch)
+   ```
+5. Close the `SummaryWriter` at the end of the training loop:
+   ```python
+   writer.close()
+   ```
+
+## Using Weights & Biases for Real-Time Monitoring and Visualization
+
+To integrate Weights & Biases (wandb) for real-time monitoring and visualization of training metrics, follow these steps:
+
+1. Install Weights & Biases by running `pip install wandb`.
+2. Import Weights & Biases in your `distributed_training.py` file:
+   ```python
+   import wandb
+   ```
+3. Initialize a Weights & Biases run to start logging metrics:
+   ```python
+   wandb.init(project="pytorch-dist-innovator")
+   ```
+4. Log the training metrics such as loss and accuracy to Weights & Biases within the training loop:
+   ```python
+   wandb.log({"loss": loss.item()})
+   ```

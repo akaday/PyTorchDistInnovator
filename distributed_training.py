@@ -7,6 +7,8 @@ import yaml
 import json
 from distributed_config import dist_backend, world_size, rank, master_addr, master_port
 from data_loader import get_data_loader
+from torch.utils.tensorboard import SummaryWriter
+import wandb
 
 # Load hyperparameters from config.yaml or config.json
 config_file = 'config.yaml'  # Change this to 'config.json' if using JSON
@@ -18,6 +20,12 @@ with open(config_file, 'r') as file:
     else:
         raise ValueError("Unsupported configuration file format. Use YAML or JSON.")
 hyperparameters = config['hyperparameters']
+
+# Initialize TensorBoard SummaryWriter
+writer = SummaryWriter()
+
+# Initialize Weights & Biases
+wandb.init(project="pytorch-dist-innovator")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -73,3 +81,8 @@ for epoch in range(10):
         optimizer.step()
     if rank == 0:
         logging.info(f"Epoch {epoch+1}, Loss: {loss.item()}")
+        writer.add_scalar('Loss/train', loss.item(), epoch)
+        wandb.log({"loss": loss.item()})
+
+# Close the TensorBoard SummaryWriter
+writer.close()
