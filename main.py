@@ -6,7 +6,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 class InputData(BaseModel):
-    data: list
+    data: list[float]  # Ensure the data list contains floats
 
 class SimpleModel(nn.Module):
     def __init__(self):
@@ -26,7 +26,8 @@ except Exception as e:
 @app.post("/predict/")
 async def predict(input_data: InputData):
     try:
-        data = torch.tensor([input_data.data])
+        data = input_data.data
+        data = torch.tensor(data, dtype=torch.float32).unsqueeze(0)  # Ensure data is a 2D tensor
         with torch.no_grad():
             prediction = model(data)
         return {"prediction": prediction.item()}
